@@ -7,10 +7,11 @@ import com.project.qrclub.exceptions.UuidNotFoundException;
 import com.project.qrclub.repository.UserRepository;
 import com.project.qrclub.repository.UserUUIDRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
-import java.util.Optional;
+
 import java.util.UUID;
 
 @Service
@@ -19,11 +20,13 @@ public class UUIDCRUDService {
     private final UserRepository userRepository;
 
 
+
     public UUIDCRUDService(UserUUIDRepository userUuidRepository, UserRepository userRepository) {
         this.userUuidRepository = userUuidRepository;
         this.userRepository = userRepository;
-    }
 
+    }
+    @Transactional
     public CreateQrResponseDto createUuid(User user){
         UUID uuid = UUID.randomUUID();
         UsersUUID usersUUID = new UsersUUID();
@@ -36,11 +39,9 @@ public class UUIDCRUDService {
                 user.getId()
         );
     }
-
+    @Transactional
     public void deleteQrById(Long id){
-         UsersUUID usersUUID = userUuidRepository.findById(id).orElseThrow(
-                 ()->new UuidNotFoundException("Qr код не найден")
-         );
+         UsersUUID usersUUID = findUuidById(id);
 
          var user = usersUUID.getUser();
 
@@ -50,6 +51,19 @@ public class UUIDCRUDService {
          userUuidRepository.delete(usersUUID);
 
     }
+    @Transactional
+    public void updateUuid(Long id){
+        var userUuid = findUuidById(id);
+        UUID newUUID = UUID.randomUUID();
+        userUuid.setUuid(newUUID);
+        userUuidRepository.save(userUuid);
+    }
 
+    public UsersUUID findUuidById(Long id){
+        var found = userUuidRepository.findById(id).orElseThrow(
+                ()->new UuidNotFoundException("Qr код не найден")
+        );
+        return found;
+    }
 
 }

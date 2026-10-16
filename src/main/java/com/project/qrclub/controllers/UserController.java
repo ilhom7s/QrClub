@@ -2,6 +2,8 @@ package com.project.qrclub.controllers;
 
 import com.project.qrclub.dto.CreateUserRequestDto;
 import com.project.qrclub.dto.CreateUserResponseDto;
+import com.project.qrclub.dto.UpdateUserRequestDto;
+import com.project.qrclub.dto.UserDto;
 import com.project.qrclub.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,12 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body("Пользователь успешно удален");
+    }
+    @PutMapping("/{email}")
+    public ResponseEntity<UserDto> updateUser(@PathVariable String email, @RequestBody UpdateUserRequestDto updateRequest){
+        var updated = userService.updateUser(email,updateRequest);
+        return ResponseEntity
+                .ok(updated);
     }
 
 

@@ -5,6 +5,7 @@ package com.project.qrclub.services;
 import com.project.qrclub.Mapper.UserMapper;
 import com.project.qrclub.dto.CreateUserRequestDto;
 import com.project.qrclub.dto.CreateUserResponseDto;
+import com.project.qrclub.dto.UpdateUserRequestDto;
 import com.project.qrclub.dto.UserDto;
 import com.project.qrclub.entity.User;
 import com.project.qrclub.entity.UsersUUID;
@@ -18,27 +19,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class UserService {
 
     private final UserUUIDRepository userUUIDRepository;
-    private final UUIDCRUDService uuidcrudService;
+    private final UUIDCRUDService uuidCrudService;
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
     public UserService(UserUUIDRepository userUUIDRepository, UUIDCRUDService uuidcrudService, UserMapper userMapper, UserRepository userRepository) {
         this.userUUIDRepository = userUUIDRepository;
-        this.uuidcrudService = uuidcrudService;
+        this.uuidCrudService = uuidcrudService;
         this.userMapper = userMapper;
         this.userRepository = userRepository;
     }
     @Transactional
     public UserDto entryToClub(UUID uuid){
         UsersUUID existing = userUUIDRepository.
-                findByUUID(uuid).orElseThrow(
+                findByUuid(uuid).orElseThrow(
                         ()-> new UuidNotFoundException(String.format("Такой UUID не найден в базе данных %s",uuid)));
         UUID newUuid = UUID.randomUUID();
         existing.setUuid(newUuid);
@@ -47,7 +47,7 @@ public class UserService {
         UserDto result = userMapper.toUserDto(user);
         return result;
     }
-
+    @Transactional
     public CreateUserResponseDto createNewUser(CreateUserRequestDto createUserRequestDto){
         if (userRepository.findByEmail(createUserRequestDto.email()).isPresent()) {
             throw new UserAlreadryInBaseException(
@@ -88,6 +88,15 @@ public class UserService {
                 ()->new UserNotFoundException("Пользователь с таким email не существует")
         );
         return user;
+    }
+    @Transactional
+    public UserDto updateUser(String email,UpdateUserRequestDto updateUserRequest){
+        var user = findUser(email);
+        user.setEmail(updateUserRequest.newEmail());
+        user.setName(updateUserRequest.newName());
+        user.setLastName(updateUserRequest.newLastName());
+        userRepository.save(user);
+        return userMapper.toUserDto(user);
     }
 
 }

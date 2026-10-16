@@ -26,4 +26,5 @@ public class EntryController {
                 .ok(result);
     }
 
+
 }

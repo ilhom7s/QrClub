@@ -21,20 +21,29 @@ public class QrController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateQrResponseDto> createQr(@RequestBody CreateQrRequestDto createQrRequestDto){
+    public ResponseEntity<CreateQrResponseDto> createQr(@RequestBody CreateQrRequestDto createQrRequestDto) {
 
-       var found =  userService.findUser(createQrRequestDto.email());
-       var response = uuidService.createUuid(found);
-       return ResponseEntity
-               .status(HttpStatus.CREATED)
-               .body(response);
+        var found = userService.findUser(createQrRequestDto.email());
+        var response = uuidService.createUuid(found);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(response);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteQrById(@PathVariable Long id){
+    public ResponseEntity<String> deleteQrById(@PathVariable Long id) {
         uuidService.deleteQrById(id);
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body("Qr code успешно удален");
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateUUID(@PathVariable Long id){
+        uuidService.updateUuid(id);
+        return ResponseEntity
+                .ok("Qr code Успешно обновился");
+    }
+
 }
