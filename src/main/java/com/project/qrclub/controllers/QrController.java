@@ -31,6 +31,10 @@ public class QrController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteQrById(@PathVariable Long id){
+        uuidService.deleteQrById(id);
 
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body("Qr code успешно удален");
     }
 }
