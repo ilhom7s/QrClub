@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: postgres
+    container_name: club-postgres
+    environment:
+      POSTGRES_DB: club
+      POSTGRES_USER: club
+      POSTGRES_PASSWORD: club
+    ports:
+      - "5432:5432"
