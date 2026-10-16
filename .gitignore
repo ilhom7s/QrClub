@@ -33,3 +33,6 @@ build/
 .vscode/
 mvnw.cmd
 .mvn
+.mvn/wrapper
+.gitattributes
+mvnw
