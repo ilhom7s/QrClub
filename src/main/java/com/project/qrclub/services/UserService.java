@@ -78,12 +78,12 @@ public class UserService {
     }
 
     public void deleteUserFromDB(String email){
-       var userFound = findUser(email);
+       var userFound = find(email);
         userRepository.delete(userFound);
 
     }
 
-    public User findUser(String email){
+    public User find(String email){
         var user =  userRepository.findByEmail(email).orElseThrow(
                 ()->new UserNotFoundException("Пользователь с таким email не существует")
         );
@@ -91,7 +91,7 @@ public class UserService {
     }
     @Transactional
     public UserDto updateUser(String email,UpdateUserRequestDto updateUserRequest){
-        var user = findUser(email);
+        var user = find(email);
         user.setEmail(updateUserRequest.newEmail());
         user.setName(updateUserRequest.newName());
         user.setLastName(updateUserRequest.newLastName());

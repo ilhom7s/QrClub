@@ -8,8 +8,8 @@ import com.project.qrclub.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/users")

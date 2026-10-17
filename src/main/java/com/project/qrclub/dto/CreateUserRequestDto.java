@@ -1,4 +1,5 @@
 package com.project.qrclub.dto;
+import com.project.qrclub.Constants;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
@@ -16,7 +17,7 @@ public record CreateUserRequestDto(
                 message = "Фамилия может содержать только буквы"
         )
         String lastName,
-        @NotBlank(message = "Email не может быть пустым!")
+        @NotBlank(message = Constants.EmailNotBlankMessage)
         String email
 ) {
 }

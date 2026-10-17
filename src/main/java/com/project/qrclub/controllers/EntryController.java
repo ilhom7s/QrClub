@@ -2,28 +2,27 @@ package com.project.qrclub.controllers;
 
 import com.project.qrclub.dto.UserDto;
 import com.project.qrclub.services.UserService;
-import org.springframework.http.HttpStatus;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/club/entry")
+@RequiredArgsConstructor
 public class EntryController {
     private final UserService userService;
-    public EntryController(UserService userService) {
-        this.userService = userService;
-    }
 
-    @GetMapping("/{uuid}")
+    @PostMapping("/{uuid}")
     public ResponseEntity<UserDto> entryToClub(@PathVariable UUID uuid){
-        UserDto result = userService.entryToClub(uuid);
         return ResponseEntity
-                .ok(result);
+                .ok(userService.entryToClub(uuid));
     }
 
 

@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 public class UsersUUID {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     @Column(name = "user_uuid")
